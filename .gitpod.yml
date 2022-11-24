@@ -1,6 +1,5 @@
 tasks:
-  - prebuild: mvn install spring-boot:start spring-boot:stop -DskipTests
-    command: mvn spring-boot:run
+  - prebuild: mvn spring-boot:start spring-boot:stop -DskipTests
 ports:
   - port: 8080
     onOpen: open-preview
