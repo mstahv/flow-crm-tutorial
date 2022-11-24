@@ -1,5 +1,5 @@
 tasks:
-  - init: mvn spring-boot:start spring-boot:stop -DskipTests
+  - init: mvn package spring-boot:start spring-boot:stop -DskipTests
 ports:
   - port: 8080
     onOpen: open-preview
