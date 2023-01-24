@@ -6,9 +6,11 @@ import com.example.application.data.entity.Status;
 import com.example.application.data.repository.CompanyRepository;
 import com.example.application.data.repository.ContactRepository;
 import com.example.application.data.repository.StatusRepository;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 public class CrmService {
@@ -55,5 +57,9 @@ public class CrmService {
 
     public List<Status> findAllStatuses(){
         return statusRepository.findAll();
+    }
+
+    public Stream<Contact> findAllContacts(String filter, PageRequest pr) {
+        return contactRepository.search(filter, pr).stream();
     }
 }

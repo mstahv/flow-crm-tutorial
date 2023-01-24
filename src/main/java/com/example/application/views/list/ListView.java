@@ -12,6 +12,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -112,7 +113,11 @@ public class ListView extends VerticalLayout {
     }
 
     private void updateList() {
-        grid.setItems(service.findAllContacts(filterText.getValue()));
+        grid.setItems(q -> service.findAllContacts(
+                    filterText.getValue(),
+                    VaadinSpringDataHelpers.toSpringPageRequest(q)
+                )
+        );
     }
 
 
