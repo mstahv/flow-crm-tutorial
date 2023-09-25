@@ -17,8 +17,10 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.shared.Registration;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ContactForm extends FormLayout { 
   TextField firstName = new TextField("First name"); 
@@ -32,6 +34,7 @@ public class ContactForm extends FormLayout {
   Button close = new Button("Cancel");
   // Other fields omitted
   Binder<Contact> binder = new BeanValidationBinder<>(Contact.class);
+  private Contact contact;
 
   public ContactForm(List<Company> companies, List<Status> statuses) {
     addClassName("contact-form");
@@ -59,7 +62,7 @@ public class ContactForm extends FormLayout {
     close.addClickShortcut(Key.ESCAPE);
 
     save.addClickListener(event -> validateAndSave()); // <1>
-    delete.addClickListener(event -> fireEvent(new DeleteEvent(this, binder.getBean()))); // <2>
+    delete.addClickListener(event -> fireEvent(new DeleteEvent(this, contact))); // <2>
     close.addClickListener(event -> fireEvent(new CloseEvent(this))); // <3>
 
     binder.addStatusChangeListener(e -> save.setEnabled(binder.isValid())); // <4>
@@ -68,13 +71,20 @@ public class ContactForm extends FormLayout {
 
   private void validateAndSave() {
     if(binder.isValid()) {
-      fireEvent(new SaveEvent(this, binder.getBean())); // <6>
+      BeanUtils.copyProperties(binder.getBean(), contact);
+      fireEvent(new SaveEvent(this, contact)); // <6>
     }
   }
 
 
   public void setContact(Contact contact) {
-    binder.setBean(contact); // <1>
+    this.contact = contact;
+    if(contact != null) {
+      // Make a copy of the contact to allow cancelling editing
+      var buffer = new Contact();
+      BeanUtils.copyProperties(contact, buffer);
+      binder.setBean(buffer); // <1>
+    }
   }
 
   // Events

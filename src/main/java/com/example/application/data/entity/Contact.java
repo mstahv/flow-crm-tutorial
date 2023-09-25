@@ -1,15 +1,10 @@
 package com.example.application.data.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-@Entity
-public class Contact extends AbstractEntity {
+public class Contact {
 
     @NotEmpty
     private String firstName = "";
@@ -17,14 +12,10 @@ public class Contact extends AbstractEntity {
     @NotEmpty
     private String lastName = "";
 
-    @ManyToOne
-    @JoinColumn(name = "company_id")
     @NotNull
-    @JsonIgnoreProperties({"employees"})
     private Company company;
 
     @NotNull
-    @ManyToOne
     private Status status;
 
     @Email
@@ -34,6 +25,17 @@ public class Contact extends AbstractEntity {
     @Override
     public String toString() {
         return firstName + " " + lastName;
+    }
+
+    public Contact() {
+    }
+
+    public Contact(String firstName, String lastName, String email, Company company, Status status) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.company = company;
+        this.status = status;
     }
 
     public String getFirstName() {
