@@ -1,14 +1,3 @@
-# Spring Boot and Vaadin course source code
+# CRM example app using Eclipse Serializer instead of JPA
 
-This repository contains the source code for the [Building Modern Web Applications With Spring Boot and Vaadin](https://vaadin.com/docs/latest/flow/tutorials/in-depth-course).
-
-*Live demo:* https://crm.demo.vaadin.com
-
-## Branches
-
-- The main branch contains the source code for the latest Vaadin release
-- The `v14` branch contains the source code for Vaadin 14
-
-
-## Text tutorial
-You can find a text version of the tutorial in the [Vaadin Documentation](https://vaadin.com/docs/latest/flow/tutorials/in-depth-course).
+This is a fork the example app created in [Vaadin Tutorial](https://vaadin.com/docs/latest/tutorial/overview), but uses Eclipse Serializer instead of JPA to store the data on disk.
