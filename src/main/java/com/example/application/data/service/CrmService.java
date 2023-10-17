@@ -26,6 +26,10 @@ public class CrmService {
     public CrmService() {
         SerializerFoundation<?> foundation = SerializerFoundation.New();
         // Define the custom Java types that we want to serialize/deserialize
+        // Without these hints, deserialisation will fail if it happens
+        // in a different process than the one that serialized the data.
+        // There is also TypedSerializer which is a bit more convenient,
+        // and don't need these configs, but slower and less secure.
         foundation.registerEntityTypes(
                 Company.class,
                 Contact.class,
