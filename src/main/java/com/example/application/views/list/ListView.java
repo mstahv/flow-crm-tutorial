@@ -3,13 +3,9 @@ package com.example.application.views.list;
 import com.example.application.data.entity.Contact;
 import com.example.application.data.service.CrmService;
 import com.example.application.views.MainLayout;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.SpringComponent;
@@ -23,8 +19,9 @@ import org.springframework.context.annotation.Scope;
 @PageTitle("Contacts | Vaadin CRM")
 public class ListView extends VerticalLayout {
     Grid<Contact> grid = new Grid<>(Contact.class);
-    TextField filterText = new TextField();
     ContactForm form;
+    Toolbar toolbar = new Toolbar(this);
+
     CrmService service;
 
     public ListView(CrmService service) {
@@ -34,7 +31,7 @@ public class ListView extends VerticalLayout {
         configureGrid();
         configureForm();
 
-        add(getToolbar(), getContent());
+        add(toolbar, getContent());
         updateList();
         closeEditor();
     }
@@ -80,20 +77,6 @@ public class ListView extends VerticalLayout {
                 editContact(event.getValue()));
     }
 
-    private Component getToolbar() {
-        filterText.setPlaceholder("Filter by name...");
-        filterText.setClearButtonVisible(true);
-        filterText.setValueChangeMode(ValueChangeMode.LAZY);
-        filterText.addValueChangeListener(e -> updateList());
-
-        Button addContactButton = new Button("Add contact");
-        addContactButton.addClickListener(click -> addContact());
-
-        var toolbar = new HorizontalLayout(filterText, addContactButton);
-        toolbar.addClassName("toolbar");
-        return toolbar;
-    }
-
     public void editContact(Contact contact) {
         if (contact == null) {
             closeEditor();
@@ -110,13 +93,13 @@ public class ListView extends VerticalLayout {
         removeClassName("editing");
     }
 
-    private void addContact() {
+    void addContact() {
         grid.asSingleSelect().clear();
         editContact(new Contact());
     }
 
 
-    private void updateList() {
-        grid.setItems(service.findAllContacts(filterText.getValue()));
+    void updateList() {
+        grid.setItems(service.findAllContacts(toolbar.getFilter()));
     }
 }
