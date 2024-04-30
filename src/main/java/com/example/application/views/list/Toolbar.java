@@ -1,11 +1,12 @@
 package com.example.application.views.list;
 
+import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 
-public class Toolbar extends HorizontalLayout {
+public class Toolbar extends Composite<HorizontalLayout> {
 
     TextField filterText = new TextField();
 
@@ -18,7 +19,7 @@ public class Toolbar extends HorizontalLayout {
 
         Button addContactButton = new Button("Add contact");
         addContactButton.addClickListener(e -> listView.addContact());
-        add(filterText, addContactButton);
+        getContent().add(filterText, addContactButton);
 
     }
 
